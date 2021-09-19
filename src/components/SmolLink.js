@@ -176,8 +176,13 @@ export default function SmolLink (props) {
         if (prop) {
             fetchUserLinks();
         }
-    console.log(props);
     }, [])
+
+    useEffect(() => {
+        if (urlNickname.length >= 25) {
+            setUrlNickName(urlNickname.slice(0, 25));
+        }
+    }, [urlNickname])
 
     return(
         <>
@@ -185,20 +190,20 @@ export default function SmolLink (props) {
             <Spinner size="sm" className="d-block mx-auto" animation="border" />
         </div>
         { showBigSpinner ? 
-            <Row key={prop.key} className="bg-light py-3 mx-sm-0 border smol-container" style={{minWidth: "267px"}}>
-                <Col xs={12} className={!showInput && "d-none"}>{urlNickname ? <h5>{urlNickname}</h5> : <Link className="text-dark" target="_blank" to={`/${shortUrl}`}><h5>sm-ol.vercel.app/{shortUrl}</h5></Link>}</Col>
+            <Row className="bg-light py-3 mx-sm-0 border smol-container" style={{minWidth: "267px"}}>
+                <Col xs={12} className={!showInput && "d-none"}>{urlNickname ? <h5 className="overflow-auto py-1">{urlNickname}</h5> : <Link className="text-dark" target="_blank" to={`/${shortUrl}`}><h5>sm-ol.vercel.app/{shortUrl}</h5></Link>}</Col>
                 <Col xs={12} className={showInput}>
                 <Form onSubmit={e => changeUrlNickname(e)}>
                     <InputGroup>
                         <FormControl placeholder="Enter nickname" type="text" value={urlNickname} onChange={e => setUrlNickName(e.target.value)} className="text-dark" />
                         <InputGroup.Append>
-                            <Button className="px-2 border-dark border" id="" variant="light" disabled={!showSpinner} onClick={e => changeUrlNickname(e)} size="sm">{!showSpinner ? <Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /> : <span>&#10003;</span>}</Button>
-                            <Button className="px-2 border-dark border" id="" variant="light" onClick={() => setShowInput("d-none")} size="sm">&#x2715;</Button>
+                            <Button className="px-3 border-dark border" id="" variant="light" disabled={!showSpinner} onClick={e => changeUrlNickname(e)} size="sm">{!showSpinner ? <Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /> : <span>&#10003;</span>}</Button>
+                            <Button className="px-3 border-dark border" id="" variant="light" onClick={() => setShowInput("d-none")} size="sm">&#x2715;</Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form>
                 </Col>
-                <Col xs={12}><span >{urlNickname ? <Link target="_blank" to={`/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</Link>  : null}</span></Col>
+                <Col xs={12}><span>{urlNickname ? <Link target="_blank" to={`/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</Link>  : null}</span></Col>
                 <Col xs={12} >Created: {dateCreated}</Col>
                 <Col xs={12} >Destination: </Col>
                 <Col xs={12}><div className="my-2 border py-1 px-2 longUrl-text">{longUrl}</div></Col>
