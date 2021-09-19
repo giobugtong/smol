@@ -76,7 +76,7 @@ export default function Home () {
                         setErrorStyleSm("border border-danger");
                     } else if (data.shortUrl) {
                         setShowNewLink("mt-3 mt-md-4");
-                        setNewLink(`https://smol.vercel.app/${data.shortUrl}`);
+                        setNewLink(`https://sm-ol.vercel.app/${data.shortUrl}`);
                     }
                     setShowSpinner("d-none");
                     setLongUrl("");
@@ -115,7 +115,7 @@ export default function Home () {
                         setErrorStyleSm("border border-danger");
                     } else if (data.shortUrl) {
                         setShowNewLink("mt-3 mt-md-4");
-                        setNewLink(`https://smol.vercel.app/${data.shortUrl}`);
+                        setNewLink(`https://sm-ol.vercel.app/${data.shortUrl}`);
                         copyToLocalStorage({shortUrl: data.shortUrl});
                     }
                     setShowSpinner("d-none");
@@ -193,7 +193,7 @@ export default function Home () {
                         <InputGroup className="mb-3" style={{border: "1px solid black"}}>
                             <InputGroup.Prepend>
                             <InputGroup.Text className="url-prefix">
-                                smol.vercel.app/
+                                sm-ol.vercel.app/
                             </InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl aria-describedby="basic-addon3" type="text" placeholder="Custom smol link (optional)"
@@ -223,9 +223,9 @@ export default function Home () {
                                 <p>Your 3 last created links:</p>
                                 <hr></hr>
                                 <ul className="pl-4 pl-sm-5" style={{listStyle: "none"}}>
-                                    {storedLinks[0] && <li><Link target="_blank" to={`/${storedLinks[0].shortUrl}`}>{`smol.vercel.app/${storedLinks[0].shortUrl}`}</Link></li>}
-                                    {storedLinks[1] && <li><Link target="_blank" to={`/${storedLinks[1].shortUrl}`}>{`smol.vercel.app/${storedLinks[1].shortUrl}`}</Link></li>}
-                                    {storedLinks[2] && <li><Link target="_blank" to={`/${storedLinks[2].shortUrl}`}>{`smol.vercel.app/${storedLinks[2].shortUrl}`}</Link></li>}
+                                    {storedLinks[0] && <li><Link target="_blank" to={`/${storedLinks[0].shortUrl}`}>{`sm-ol.vercel.app/${storedLinks[0].shortUrl}`}</Link></li>}
+                                    {storedLinks[1] && <li><Link target="_blank" to={`/${storedLinks[1].shortUrl}`}>{`sm-ol.vercel.app/${storedLinks[1].shortUrl}`}</Link></li>}
+                                    {storedLinks[2] && <li><Link target="_blank" to={`/${storedLinks[2].shortUrl}`}>{`sm-ol.vercel.app/${storedLinks[2].shortUrl}`}</Link></li>}
 
                                 </ul>
                                     <p><Link to={"/smol/login"}>Login</Link> now to keep them in your account.</p>

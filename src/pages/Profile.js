@@ -252,7 +252,7 @@ export default function Profile () {
                         <InputGroup className="mb-3" style={{border: "1px solid black"}}>
                             <InputGroup.Prepend>
                             <InputGroup.Text className="url-prefix">
-                                smol.vercel.app/
+                                sm-ol.vercel.app/
                             </InputGroup.Text>
                             </InputGroup.Prepend>
                             <FormControl aria-describedby="basic-addon3" type="text" placeholder="Custom smol link (optional)"

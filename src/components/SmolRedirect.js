@@ -41,7 +41,7 @@ export default function SmolRedirect () {
                 setShowSpinner("d-none");
                 setDogMessage("Link unavailable. Sorry about that. Here's a cute dog photo to look at instead:");
                 Swal.fire({
-                    text: `Sorry, smol.vercel.app/${smolParam} does not exist or was deactivated by the owner.`,
+                    text: `Sorry, sm-ol.vercel.app/${smolParam} does not exist or was deactivated by the owner.`,
                     icon: "info",
                     showConfirmButton: true,
                     confirmButtonText: "Home",

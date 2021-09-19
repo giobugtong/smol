@@ -65,7 +65,7 @@ export default function SmolLink (props) {
     }
 
     const copyLink = () => {
-        navigator.clipboard.writeText(`smol.vercel.app/${shortUrl}`);
+        navigator.clipboard.writeText(`sm-ol.vercel.app/${shortUrl}`);
         const Toast = Swal.mixin({
             toast: true,
             icon: "success",
@@ -186,7 +186,7 @@ export default function SmolLink (props) {
         </div>
         { showBigSpinner ? 
             <Row key={prop.key} className="bg-light py-3 mx-sm-0 border smol-container" style={{minWidth: "267px"}}>
-                <Col xs={12} className={!showInput && "d-none"}>{urlNickname ? <h5>{urlNickname}</h5> : <Link className="text-dark" target="_blank" to={`/${shortUrl}`}><h5>smol.vercel.app/{shortUrl}</h5></Link>}</Col>
+                <Col xs={12} className={!showInput && "d-none"}>{urlNickname ? <h5>{urlNickname}</h5> : <Link className="text-dark" target="_blank" to={`/${shortUrl}`}><h5>sm-ol.vercel.app/{shortUrl}</h5></Link>}</Col>
                 <Col xs={12} className={showInput}>
                 <Form onSubmit={e => changeUrlNickname(e)}>
                     <InputGroup>
@@ -198,7 +198,7 @@ export default function SmolLink (props) {
                     </InputGroup>
                 </Form>
                 </Col>
-                <Col xs={12}><span >{urlNickname ? <Link target="_blank" to={`/${shortUrl}`}>smol.vercel.app/{shortUrl}</Link>  : null}</span></Col>
+                <Col xs={12}><span >{urlNickname ? <Link target="_blank" to={`/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</Link>  : null}</span></Col>
                 <Col xs={12} >Created: {dateCreated}</Col>
                 <Col xs={12} >Destination: </Col>
                 <Col xs={12}><div className="my-2 border py-1 px-2 longUrl-text">{longUrl}</div></Col>
