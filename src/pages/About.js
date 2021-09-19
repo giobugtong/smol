@@ -31,7 +31,7 @@ export default function About () {
                     
                     <h4>Why</h4>
                         <p>As a former human resources professional, I used a lot of shortened links to communicate better with employees and officers. Most of them were links to Google Forms for gathering data, registration forms, information campaigns, and invitations to free webinars.</p>
-                        <p>As the the COVID-19 pandemic ravaged the world and forced most of the workforce into a remote setup, communication and coordination spelled the difference between a good day at work and a disaster. Shorter URLs helped me in properly and more effectively disseminating potentially life-saving information to the employees.</p>
+                        <p>As the the COVID-19 pandemic ravaged the world and forced most of the workforce into a remote setup, communication and coordination spelled the difference between a good day at work and a disaster. Shorter URLs helped me in properly and more effectively disseminate potentially life-saving information to the employees.</p>
                 </div>
 
 
