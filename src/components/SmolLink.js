@@ -172,6 +172,11 @@ export default function SmolLink (props) {
         })
     }
 
+    const hideInput = () => {
+        setShowInput("d-none");
+        fetchUserLinks();
+    }
+
     useEffect(() => {
         if (prop) {
             fetchUserLinks();
@@ -198,7 +203,7 @@ export default function SmolLink (props) {
                         <FormControl placeholder="Enter nickname" type="text" value={urlNickname} onChange={e => setUrlNickName(e.target.value)} className="text-dark" />
                         <InputGroup.Append>
                             <Button className="px-3 border-dark border" id="" variant="light" disabled={!showSpinner} onClick={e => changeUrlNickname(e)} size="sm">{!showSpinner ? <Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /> : <span>&#10003;</span>}</Button>
-                            <Button className="px-3 border-dark border" id="" variant="light" onClick={() => setShowInput("d-none")} size="sm">&#x2715;</Button>
+                            <Button className="px-3 border-dark border" id="" variant="light" onClick={() => hideInput()} size="sm">&#x2715;</Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form>
