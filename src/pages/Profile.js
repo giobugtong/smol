@@ -189,10 +189,12 @@ export default function Profile () {
 
     return(
         <div className="mx-auto" style={{maxWidth: "1100px"}}>
-            <Row className="mt-3 mt-md-4 mb-5">
+            <Row className="mt-3 mt-md-4">
                 <Col xs={12}>
                     <h1>Profile</h1>
                 </Col>
+            </Row>
+            <Row className={firstName ? "mb-5" : "d-none"}>
 
                 <Col sm={11} md={9} lg={7}  className="">
                     <Card className="mt-3 mt-md-4 rounded-0">
@@ -214,7 +216,7 @@ export default function Profile () {
                     </Card>
                 </Col>
             </Row>
-            <div className={showBigSpinner}>
+            <div className={`mt-5 ${showBigSpinner}`}>
                 <Spinner size="lg" className="d-block mx-auto" animation="border" />
             </div>
             {
