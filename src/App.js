@@ -51,6 +51,7 @@ export default function App() {
           <Container fluid id="main-container">
               <Switch>
 
+                <Route exact path="/" component={ Home } />
                 <Route exact path="/smol/home" component={ Home } />
 
                 <Route exact path="/smol/profile">
