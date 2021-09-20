@@ -93,7 +93,7 @@ export default function Register () {
                 <h1 className="mb-sm-4">Register</h1>
                 <Form onSubmit={e => registerUser(e)}>
                     <p className="text-danger">{warningMsg}</p>
-                    <p className={showLoginLink}>Email is already registered. Please <Link to="/smol/login" >login</Link> or enter a different email.</p>
+                    <p className={showLoginLink}>Email is already registered. Please <Link className="text-primary" to="/smol/login" >login</Link> or enter a different email.</p>
                     
                     <Form.Group className="my-2 my-sm-3">
                         <Form.Label>First name: </Form.Label>
