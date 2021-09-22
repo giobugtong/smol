@@ -21,6 +21,7 @@ export default function SmolLink (props) {
     const [showInput, setShowInput] = useState("d-none");
     const [showSpinner, setShowSpinner] = useState("d-none");
     const [showBigSpinner, setShowBigSpinner] = useState("d-none");
+    const [showQrSpinner, setShowQrSpinner] = useState("d-none");
 
     const fetchUserLinks = () => {
         setShowSpinner("");
@@ -89,48 +90,107 @@ export default function SmolLink (props) {
     }
 
     const toggleStatus = () => {
-        setShowSpinner("");
-        fetch(`${process.env.REACT_APP_API_URL}/links/toggle-status`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify({
-                linkId: linkId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                Swal.fire({
-                    title: "Error!",
-                    text: data.error.name,
-                    icon: "error"
-                })
-            } else {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    icon: "success",
-                    position: "top",
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showCloseButton: true
-                  })
-                Toast.fire({
-                    text: `Smol link successfully ${isActive ? "deactivated" : "activated"}!`
-                })
-                fetchUserLinks();
-            }
-        })
-        .catch(err => {
+        if (isActive) {
             Swal.fire({
-                title: "Error!",
-                text: err,
-                icon: "error"
+                title: "Confirm deactivation",
+                text: "Deactivating this link will prevent all access to associated URL.",
+                icon: "warning",
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Deactivate",
+                cancelButtonText: "Cancel"
             })
-        })
+            .then(result => {
+                if (result.isConfirmed) {
+                    setShowSpinner("");
+                    fetch(`${process.env.REACT_APP_API_URL}/links/toggle-status`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                        },
+                        body: JSON.stringify({
+                            linkId: linkId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: data.error.name,
+                                icon: "error"
+                            })
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                icon: "success",
+                                position: "top",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showCloseButton: true
+                            })
+                            Toast.fire({
+                                text: `Smol link successfully ${isActive ? "deactivated" : "activated"}!`
+                            })
+                            fetchUserLinks();
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: err,
+                            icon: "error"
+                        })
+                    })
+                }
+            })
+            
+        } else {
+            setShowSpinner("");
+                    fetch(`${process.env.REACT_APP_API_URL}/links/toggle-status`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                        },
+                        body: JSON.stringify({
+                            linkId: linkId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: data.error.name,
+                                icon: "error"
+                            })
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                icon: "success",
+                                position: "top",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showCloseButton: true
+                            })
+                            Toast.fire({
+                                text: `Smol link successfully ${isActive ? "deactivated" : "activated"}!`
+                            })
+                            fetchUserLinks();
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: err,
+                            icon: "error"
+                        })
+                    })
+        }
     }
 
     const changeUrlNickname = e => {
@@ -193,51 +253,50 @@ export default function SmolLink (props) {
             fetch(`https://api.qrserver.com/v1/create-qr-code/?size=${qrCodeSize}x${qrCodeSize}&data=https://sm-ol.vercel.app/${shortUrl}`)
             .then(result => {
                 setQrCode(result.url);
-            })
-
-            fetch(`${process.env.REACT_APP_API_URL}/links/set-qr-code`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                },
-                body: JSON.stringify({
-                    linkId: linkId,
-                    qrCode: qrCode
+                fetch(`${process.env.REACT_APP_API_URL}/links/set-qr-code`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                    },
+                    body: JSON.stringify({
+                        linkId: linkId,
+                        qrCode: result.url
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: data.error.name,
+                            icon: "error"
+                        })
+                    } else if (data.qrCodeSaved) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            icon: "success",
+                            position: "top",
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showCloseButton: true
+                          })
+                        Toast.fire({
+                            text: `QR Code generated!`
+                        })
+                    }
+                })
+                .catch(err => {
                     Swal.fire({
                         title: "Error!",
-                        text: data.error.name,
+                        text: err,
                         icon: "error"
                     })
-                } else if (data.qrCodeSaved) {
-                    setInitUrlNickname(urlNickname);
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        icon: "success",
-                        position: "top",
-                        showConfirmButton: false,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showCloseButton: true
-                      })
-                    Toast.fire({
-                        text: `QR Code created!`
-                    })
-                    fetchUserLinks();
-                }
-            })
-            .catch(err => {
-                Swal.fire({
-                    title: "Error!",
-                    text: err,
-                    icon: "error"
                 })
             })
+
+            
 
         }
     }
@@ -262,51 +321,55 @@ export default function SmolLink (props) {
 
     return(
         <>
-        <div className={showBigSpinner}>
-            <Spinner size="sm" className="d-block mx-auto" animation="border" />
-        </div>
-        { showBigSpinner ? 
-            <Row className="bg-light py-3 mx-sm-0 border smol-container" style={{minWidth: "267px"}}>
-                <Col xs={12} className={!showInput && "d-none"}>{urlNickname ? <h5 className="overflow-auto pt-2 pb-1 font-weight-bold">{urlNickname}</h5> : <Link className="text-dark" target="_blank" to={`/${shortUrl}`}><h5>sm-ol.vercel.app/{shortUrl}</h5></Link>}</Col>
-                <Col xs={12} className={`${showInput} mb-1`}>
-                <Form onSubmit={e => changeUrlNickname(e)}>
-                    <InputGroup>
-                        <FormControl placeholder="Enter nickname" type="text" value={urlNickname} onChange={e => setUrlNickName(e.target.value)} className="text-dark font-weight-bold" style={{fontSize: "20px"}}/>
-                        <InputGroup.Append>
-                            <Button className="px-3 border-dark border" id="" variant="light" disabled={!showSpinner} onClick={e => changeUrlNickname(e)} size="sm">{!showSpinner ? <Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /> : <span>&#10003;</span>}</Button>
-                            <Button className="px-3 border-dark border" id="" variant="light" onClick={() => toggleNicknameInput()} size="sm">&#x2715;</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-                </Form>
-                </Col>
-                <Col xs={12}><span>{urlNickname ? <Link target="_blank" to={`/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</Link>  : null}</span></Col>
-                <Col xs={12} >Created: {dateCreated}</Col>
-                <Col xs={12} >Destination: </Col>
-                <Col xs={12}><div className="my-2 mb-md-3 border py-1 px-2 longUrl-text">{longUrl}</div></Col>
-                <Col sm={8} >Status: <span className={`font-weight-bold ${isActive ? "text-success" : "text-danger"}`}>{isActive ? "Active" : "Deactivated"}</span></Col>
-                <Col sm={4} >Hits: {numberOfHits}</Col>
-                <Col xs={12} className="mt-3 d-block" >
-                    <Button className="themeColor my-1 link-btn" size="sm" disabled={!showSpinner} onClick={() => toggleNicknameInput()}>{urlNickname ? "Edit nickname" : "Set nickname"}<Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /></Button>
-                    <Button className="themeColor my-1 link-btn" size="sm" disabled={!showSpinner} onClick={() => toggleStatus()}>{isActive ? "Deactivate" : "Activate"}<Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /></Button>
-                    <Button className="themeColor my-1 link-btn" size="sm" onClick={() => copyLink()}>Copy link</Button>
-                    <Button className="themeColor my-1 link-btn" size="sm" onClick={() => toggleQrCode()}>{qrCode ? "View" : "Generate"} QR Code</Button>
-                </Col>
+        
+            <Row className="bg-light justify-content-center align-items-center py-3 mx-sm-0 border border-dark smol-container" style={{minWidth: "267px"}}>
+                <div style={{minHeight: "100%"}} className={`${showBigSpinner}`}>
+                    <Spinner className="d-block mx-auto" animation="border" />
+                </div>
+                { showBigSpinner ? 
+                    <>
+                    <Col xs={12} className={!showInput && "d-none"}>{urlNickname ? <h5 className="overflow-auto pt-2 pb-1 font-weight-bold">{urlNickname}</h5> : <Link className="text-dark" target="_blank" to={`/${shortUrl}`}><h5>sm-ol.vercel.app/{shortUrl}</h5></Link>}</Col>
+                    <Col xs={12} className={`${showInput} mb-1`}>
+                    <Form onSubmit={e => changeUrlNickname(e)}>
+                        <InputGroup>
+                            <FormControl placeholder="Enter nickname" type="text" value={urlNickname} onChange={e => setUrlNickName(e.target.value)} className="text-dark font-weight-bold" style={{fontSize: "20px"}}/>
+                            <InputGroup.Append>
+                                <Button className="px-3 border-dark border" id="" variant="light" disabled={!showSpinner} onClick={e => changeUrlNickname(e)} size="sm">{!showSpinner ? <Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /> : <span>&#10003;</span>}</Button>
+                                <Button className="px-3 border-dark border" id="" variant="light" onClick={() => toggleNicknameInput()} size="sm">&#x2715;</Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Form>
+                    </Col>
+                    <Col xs={12}><span>{urlNickname ? <Link target="_blank" to={`/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</Link>  : null}</span></Col>
+                    <Col xs={12} >Created: {dateCreated}</Col>
+                    <Col xs={12} >Redirects to: </Col>
+                    <Col xs={12}><div className="my-2 mb-md-3 border py-1 px-2 longUrl-text"><a className="text-primary" href={longUrl} target="_blank">{longUrl}</a></div></Col>
+                    <Col sm={8} >Status: <span className={`font-weight-bold ${isActive ? "text-success" : "text-danger"}`}>{isActive ? "Active" : "Deactivated"}</span></Col>
+                    <Col sm={4} >Hits: {numberOfHits}</Col>
+                    <Col xs={12} className="mt-3 d-block" >
+                        <Button className="themeColor my-1 link-btn" size="sm" disabled={!showSpinner} onClick={() => toggleNicknameInput()}>{urlNickname ? "Edit nickname" : "Set nickname"}<Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /></Button>
+                        <Button className="themeColor my-1 link-btn" size="sm" disabled={!showSpinner} onClick={() => toggleStatus()}>{isActive ? "Deactivate" : "Activate"}<Spinner className={`mb-1 ml-2 ${showSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /></Button>
+                        <Button className="themeColor my-1 link-btn" size="sm" onClick={() => copyLink()}>Copy link</Button>
+                        <Button className="themeColor my-1 link-btn" size="sm" onClick={() => toggleQrCode()}>{qrCode ? "View" : "Generate"} QR Code</Button>
+                    </Col>
+                    </>
+                :
+                null
+                }
             </Row>
-         :
-        null
-        }
 
-        <Modal show={showQrCode} onHide={() => setShowQrCode(false)} className="d-flex justify-ceontent-center align-items-center">
+        <Modal show={showQrCode} onHide={() => setShowQrCode(false)} className="d-flex justify-content-center align-items-center">
             
             <Modal.Header closeButton>
-                <Modal.Title>QR Code for {urlNickname ? urlNickname : `sm-ol.vercel.app/${shortUrl}`}</Modal.Title>
+                <Modal.Title>{qrCode ? urlNickname ? urlNickname : `https://sm-ol.vercel.app/${shortUrl}` : "New QR Code"}</Modal.Title>
             </Modal.Header>
             {
                 !qrCode &&
                 <Modal.Body>
+                <p>Content: <a target="_blank" href={`https://sm-ol.vercel.app/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</a></p>
                         <Form onSubmit={e => generateQrCode(e)}>
                             <Form.Group>
-                                <Form.Label>Size in pixels</Form.Label>
+                                <Form.Label>Size in pixels:</Form.Label>
                                 <Form.Control as="select" custom onChange={e => setQrCodeSize(e.target.value)}>
                                     <option value="150" selected>150 x 150</option>
                                     <option value="250">250 x 250</option>
@@ -315,7 +378,8 @@ export default function SmolLink (props) {
                                     <option value="1000">1000 x 1000</option>
                                 </Form.Control>
                             </Form.Group>
-                            <Button type="submit" className="btn-block my-3 themeColor">Generate</Button>
+                            <Button type="submit" className="btn-block mt-3 themeColor">Generate</Button>
+                            <Button onClick={() => setShowQrCode(false)} variant="secondary" className="btn-block mb-2">Cancel</Button>
                         </Form>
                 </Modal.Body>
             }
@@ -323,7 +387,11 @@ export default function SmolLink (props) {
             {
                 qrCode &&
                 <Modal.Body>
-                    <a href={qrCode} download={urlNickname ? `smol-qr-${urlNickname}.png` : `smol-qr-${shortUrl}.png`}>
+                    <div className={`py-5 ${showQrSpinner}`}>
+                        <Spinner className="d-block mx-auto" animation="border" />
+                    </div>
+                    <p>Content: <a target="_blank" href={`https://sm-ol.vercel.app/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</a></p>
+                    <a className={!showQrSpinner} href={qrCode} download={urlNickname ? `smol-qr-${urlNickname}.png` : `smol-qr-${shortUrl}.png`}>
                         <img alt={urlNickname ? `QR Code for ${urlNickname}` : `QR Code for sm-ol.vercel.app/${shortUrl}`} fluid="true" width="200px" src={qrCode} className="d-block mx-auto"/>
                     </a>
                 </Modal.Body>
