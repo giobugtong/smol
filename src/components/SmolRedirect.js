@@ -101,13 +101,6 @@ export default function SmolRedirect () {
                 setRandomDog(data.message);
             }
         })
-        .catch(err => {
-            Swal.fire({
-                title: "Catch Error!",
-                text: err,
-                icon: "error"
-            })
-        })
     }
 
 
@@ -115,7 +108,7 @@ export default function SmolRedirect () {
     useEffect(() => {
         fetchDogPhoto();
         fetchLink();
-        changeDocTitle("Smol Redirecting...");
+        changeDocTitle("Smol: Redirect");
     }, [])
 
     return(

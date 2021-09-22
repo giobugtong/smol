@@ -3,7 +3,6 @@ import { Col, Row, Card, Button, Modal, Form, InputGroup, FormControl, Spinner }
 import UserContext from "../UserContext";
 import SmolLink from "../components/SmolLink";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
 
 export default function Profile () {
     const { user, changeDocTitle } = useContext(UserContext);
