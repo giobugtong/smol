@@ -24,7 +24,7 @@ export default function About () {
                         <p>For custom links, the text entered to the secondary text input are checked for special characters - only dashes are allowed. The web app then follows the same process as described above, but with the custom link as the short URL.</p>
                         <p>Smol automatically saves a logged in user's generated links. They can also view, edit and deactivate their saved smol links through the user dashboard in <a href="/smol/profile">My Profile</a>. Every time a user clicks a link, web app adds one to the number of hits. You may also see this number in the dashboard.</p>
                         <p>For guest users, the last three (3) links generated are saved in the browser's local storage and then associated to their respective account upon logging in.</p>
-                        <p className="font-italic"><a href="https://github.com/giobugtong/smol" target="_blank">Smol source code</a></p>
+                        <p className="font-italic">Smol source code: <a href="https://github.com/giobugtong/smol" target="_blank">React app</a> | <a href="https://github.com/giobugtong/smol-api" target="_blank">API</a></p>
                     <h4>Who</h4>
                     <p>Hi! My name is Gio and I developed this web app. I am a Full Stack Web Developer based in Cavite, PH. I attended a coding bootcamp in July 2021 and completed it in September of the same year.</p>
                     <p>You can view my other works, download my resume, and contact me by clicking <a href="https://giobugtong.github.io/portfolio/" target="_blank">here</a>.</p>
