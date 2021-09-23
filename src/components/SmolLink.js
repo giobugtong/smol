@@ -322,7 +322,7 @@ export default function SmolLink (props) {
     return(
         <>
         
-            <Row className="bg-light justify-content-center align-items-center py-3 mx-sm-0 border border-dark smol-container" style={{minWidth: "267px"}}>
+            <Row className="bg-light justify-content-center align-items-center py-3 mx-sm-0 border border-dark smol-container mx-2 mx-md-0" style={{minWidth: "267px"}}>
                 <div style={{minHeight: "100%"}} className={`${showBigSpinner}`}>
                     <Spinner className="d-block mx-auto" animation="border" />
                 </div>
@@ -358,7 +358,7 @@ export default function SmolLink (props) {
                 }
             </Row>
 
-        <Modal show={showQrCode} onHide={() => setShowQrCode(false)} className="d-flex justify-content-center align-items-center">
+        <Modal show={showQrCode} onHide={() => setShowQrCode(false)} className="p-0 d-flex justify-content-center align-items-center">
             
             <Modal.Header closeButton>
                 <Modal.Title>{qrCode ? urlNickname ? urlNickname : `https://sm-ol.vercel.app/${shortUrl}` : "New QR Code"}</Modal.Title>

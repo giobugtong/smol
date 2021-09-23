@@ -231,7 +231,7 @@ export default function Profile () {
                     </Col> : null
                     }
                 </Row>
-                <Row className="mb-3 mb-sm-5 pb-sm-5 ml-sm-4">
+                <Row className="mb-3 mb-sm-5 pb-sm-5 ml-sm-4 mx">
                     {userLinks.length ? userLinks : <p className="ml-3">No links yet. <a href="" onClick={e => openAdd(e)} >Create one now!</a></p>}
                 </Row>
 
