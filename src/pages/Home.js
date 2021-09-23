@@ -116,7 +116,7 @@ export default function Home () {
                     } else if (data.shortUrl) {
                         setShowNewLink("mt-3 mt-md-4");
                         setNewLink(`https://sm-ol.vercel.app/${data.shortUrl}`);
-                        copyToLocalStorage({shortUrl: data.shortUrl});
+                        copyToLocalStorage({shortUrl: data.shortUrl, linkId: data._id});
                     }
                     setShowSpinner("d-none");
                     setLongUrl("");
