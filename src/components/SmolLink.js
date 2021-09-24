@@ -20,6 +20,7 @@ export default function SmolLink (props) {
     const [initUrlNickname, setInitUrlNickname] = useState("");
     const [showInput, setShowInput] = useState("d-none");
     const [showSpinner, setShowSpinner] = useState("d-none");
+    const [showGenerateSpinner, setShowGenerateSpinner] = useState("d-none");
     const [showBigSpinner, setShowBigSpinner] = useState("d-none");
     const [showQrSpinner, setShowQrSpinner] = useState("d-none");
 
@@ -195,58 +196,63 @@ export default function SmolLink (props) {
 
     const changeUrlNickname = e => {
         e.preventDefault();
-        setShowSpinner("");
-        fetch(`${process.env.REACT_APP_API_URL}/links/set-url-nickname`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            },
-            body: JSON.stringify({
-                linkId: linkId,
-                newNickname: urlNickname
+        if (initUrlNickname === urlNickname) {
+            setShowInput("d-none");
+        } else {
+            setShowSpinner("");
+            fetch(`${process.env.REACT_APP_API_URL}/links/set-url-nickname`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                },
+                body: JSON.stringify({
+                    linkId: linkId,
+                    newNickname: urlNickname
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: data.error.name,
+                        icon: "error"
+                    })
+                } else {
+                    setInitUrlNickname(urlNickname);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        icon: "success",
+                        position: "top",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showCloseButton: true
+                    })
+                    Toast.fire({
+                        text: `Nickname set!`
+                    })
+                    fetchUserLinks();
+                }
+            })
+            .catch(err => {
                 Swal.fire({
                     title: "Error!",
-                    text: data.error.name,
+                    text: err,
                     icon: "error"
                 })
-            } else {
-                setInitUrlNickname(urlNickname);
-                const Toast = Swal.mixin({
-                    toast: true,
-                    icon: "success",
-                    position: "top",
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showCloseButton: true
-                  })
-                Toast.fire({
-                    text: `Nickname set!`
-                })
-                fetchUserLinks();
-            }
-        })
-        .catch(err => {
-            Swal.fire({
-                title: "Error!",
-                text: err,
-                icon: "error"
             })
-        })
+        }
     }
-
+        
     const toggleQrCode = () => {
         showQrCode ? setShowQrCode(false) : setShowQrCode(true);
     }
 
     const generateQrCode = e => {
         e.preventDefault();
+        setShowGenerateSpinner("");
         if (qrCode) {
             return
         } else {
@@ -272,6 +278,7 @@ export default function SmolLink (props) {
                             text: data.error.name,
                             icon: "error"
                         })
+                        setShowGenerateSpinner("d-none");
                     } else if (data.qrCodeSaved) {
                         const Toast = Swal.mixin({
                             toast: true,
@@ -285,6 +292,7 @@ export default function SmolLink (props) {
                         Toast.fire({
                             text: `QR Code generated!`
                         })
+                        setShowGenerateSpinner("d-none");
                     }
                 })
                 .catch(err => {
@@ -293,6 +301,7 @@ export default function SmolLink (props) {
                         text: err,
                         icon: "error"
                     })
+                    setShowGenerateSpinner("d-none");
                 })
             })
 
@@ -322,7 +331,7 @@ export default function SmolLink (props) {
     return(
         <>
         
-            <Row className="bg-light justify-content-center align-items-center py-3 mx-sm-0 border border-dark smol-container mx-2 mx-md-0" style={{minWidth: "267px"}}>
+            <Row className="bg-light justify-content-center align-items-center py-3 mx-sm-0 border border-dark smol-container mx-2 mx-md-0">
                 <div style={{minHeight: "100%"}} className={`${showBigSpinner}`}>
                     <Spinner className="d-block mx-auto" animation="border" />
                 </div>
@@ -378,7 +387,7 @@ export default function SmolLink (props) {
                                     <option value="1000">1000 x 1000</option>
                                 </Form.Control>
                             </Form.Group>
-                            <Button type="submit" className="btn-block mt-3 themeColor">Generate</Button>
+                            <Button type="submit" className="btn-block mt-3 themeColor">Generate<Spinner className={`mb-1 ml-2 ${showGenerateSpinner}`} as="span" animation="border" role="status" aria-hidden="true" size="sm" /></Button>
                             <Button onClick={() => setShowQrCode(false)} variant="secondary" className="btn-block mb-2">Cancel</Button>
                         </Form>
                 </Modal.Body>
@@ -390,10 +399,10 @@ export default function SmolLink (props) {
                     <div className={`py-5 ${showQrSpinner}`}>
                         <Spinner className="d-block mx-auto" animation="border" />
                     </div>
-                    <p>Content: <a target="_blank" href={`https://sm-ol.vercel.app/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</a></p>
-                    <a className={!showQrSpinner} href={qrCode} download={urlNickname ? `smol-qr-${urlNickname}.png` : `smol-qr-${shortUrl}.png`}>
+                    <a className={`my-2 d-block ${!showQrSpinner}`} href={qrCode} download={urlNickname ? `smol-qr-${urlNickname}.png` : `smol-qr-${shortUrl}.png`}>
                         <img alt={urlNickname ? `QR Code for ${urlNickname}` : `QR Code for sm-ol.vercel.app/${shortUrl}`} fluid="true" width="200px" src={qrCode} className="d-block mx-auto"/>
                     </a>
+                    <p className="mt-4 mb-0">Content: <a target="_blank" href={`https://sm-ol.vercel.app/${shortUrl}`}>sm-ol.vercel.app/{shortUrl}</a></p>
                 </Modal.Body>
             }
         </Modal>
