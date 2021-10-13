@@ -231,7 +231,7 @@ export default function Profile () {
                     </Col> : null
                     }
                 </Row>
-                <Row className="mb-3 mb-sm-5 pb-sm-5">
+                <Row className="mb-3 mb-sm-5 pb-sm-5 mx-0">
                     {userLinks.length ? userLinks : <p className="ml-3">No links yet. <a href="" onClick={e => openAdd(e)} >Create one now!</a></p>}
                 </Row>
 
@@ -239,7 +239,7 @@ export default function Profile () {
             : null
             }
 
-            <Modal show={showAdd} onHide={closeAdd} className="mt-5">
+            <Modal show={showAdd} onHide={closeAdd} className="mt-5 pr-0">
                 <Form onSubmit={e => createLink(e)}>
                     <Modal.Header closeButton>
                         <Modal.Title>New Smol link</Modal.Title>
