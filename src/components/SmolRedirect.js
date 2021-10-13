@@ -64,8 +64,8 @@ export default function SmolRedirect () {
         })
     }
 
-    const addToHits = async () => {
-        await fetch(`${process.env.REACT_APP_API_URL}/links/add-to-hits`, {
+    const addToHits = () => {
+        fetch(`${process.env.REACT_APP_API_URL}/links/add-to-hits`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
