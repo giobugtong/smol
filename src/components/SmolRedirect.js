@@ -34,9 +34,11 @@ export default function SmolRedirect () {
                 })
             } else if (data.isActive) {
                 setDogMessage("Here's a photo of a dog while you wait:");
-                addToHits();
                 setShowSpinner("d-none");
-                window.location.replace(data.longUrl);
+                addToHits()
+                .then(() => {
+                    window.location.replace(data.longUrl);
+                })
             } else if (data.linkNotFound || !data.isActive) {
                 setShowSpinner("d-none");
                 setDogMessage("Link unavailable. Sorry about that. Here's a cute dog photo to look at instead:");
@@ -64,7 +66,7 @@ export default function SmolRedirect () {
         })
     }
 
-    const addToHits = () => {
+    const addToHits = async () => {
         fetch(`${process.env.REACT_APP_API_URL}/links/add-to-hits`, {
             method: "PUT",
             headers: {
