@@ -34,7 +34,7 @@ export default function SmolRedirect () {
                 })
             } else if (data.isActive) {
                 setDogMessage("Here's a photo of a dog while you wait:");
-                addToHits();
+                await addToHits();
                 setShowSpinner("d-none");
                 window.location.replace(data.longUrl);
             } else if (data.linkNotFound || !data.isActive) {
@@ -64,7 +64,7 @@ export default function SmolRedirect () {
         })
     }
 
-    const addToHits = () => {
+    const addToHits = async () => {
         fetch(`${process.env.REACT_APP_API_URL}/links/add-to-hits`, {
             method: "PUT",
             headers: {
