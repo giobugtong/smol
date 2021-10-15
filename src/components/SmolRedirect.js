@@ -24,8 +24,7 @@ export default function SmolRedirect () {
             })
         })
         .then(response => response.json())
-        .then(data => {
-            console.log("data", data)
+        .then(async data => {
             if (data.error) {
                 Swal.fire({
                     title: "Error!",
@@ -35,10 +34,24 @@ export default function SmolRedirect () {
             } else if (data.isActive) {
                 setDogMessage("Here's a photo of a dog while you wait:");
                 setShowSpinner("d-none");
-                addToHits()
-                .then(() => {
-                    window.location.replace(data.longUrl);
+                
+                let response = await fetch(`${process.env.REACT_APP_API_URL}/links/add-to-hits`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        shortUrl: smolParam
+                    })
                 })
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`)
+                } else {
+                    window.location.replace(data.longUrl);
+                }
+                
+                // await addToHits()
+                // window.location.replace(data.longUrl);
             } else if (data.linkNotFound || !data.isActive) {
                 setShowSpinner("d-none");
                 setDogMessage("Link unavailable. Sorry about that. Here's a cute dog photo to look at instead:");
@@ -66,7 +79,7 @@ export default function SmolRedirect () {
         })
     }
 
-    const addToHits = async () => {
+    const addToHits = () => {
         fetch(`${process.env.REACT_APP_API_URL}/links/add-to-hits`, {
             method: "PUT",
             headers: {
@@ -78,12 +91,14 @@ export default function SmolRedirect () {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             if (data.error) {
                 Swal.fire({
                     title: "Error!",
                     text: data.error.name,
                     icon: "error"
-                })
+                });
+                console.log(data.error)
             }
         })
         .catch(err => {
@@ -91,8 +106,8 @@ export default function SmolRedirect () {
                 title: "Catch Error!",
                 text: err,
                 icon: "error"
-            })
-        })
+            });
+        });
     }
 
     const fetchDogPhoto = () => {
