@@ -29,12 +29,15 @@ export default function Home () {
             setErrorMsg(`Invalid link format`);
             setErrorStyleMd("border border-danger");
             setErrorStyleSm("border border-danger");
+            setShowSpinner("d-none");
         } else if (shortUrl && shortUrl.length < 4) {
             setErrorMsg("Please enter at least 4 characters");
             setErrorStyleMd("border border-danger");
             setErrorStyleSm("border border-danger");
+            setShowSpinner("d-none");
         } else if (shortUrl === "smol" ) {
-            setErrorMsg(`Sorry, "smol" is a reserved smol link`)
+            setErrorMsg(`Sorry, "smol" is a reserved smol link`);
+            setShowSpinner("d-none");
         } else if (longUrl === "https://www.youtube.com/watch?v=dQw4w9WgXcQ" || longUrl === "https://www.youtube.com/watch?v=DLzxrzFCyOs") {
             Swal.fire({
                 title: "Error!",
