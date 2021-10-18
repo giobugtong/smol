@@ -20,10 +20,6 @@
   text-align: center;
 }
 
-#long-url-input {
-  /* background-color: rgba(0, 74, 173, .5); */
-}
-
 #long-url-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: var(--orange);
   font-weight: 700;
@@ -172,10 +168,6 @@ body {
 
 #main-container a {
   color: hsl(20, 100%, 50%);
-}
-
-#main-container p {
-  /* hyphens: auto; */
 }
 
 #main-container a:hover {
